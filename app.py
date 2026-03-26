@@ -6,17 +6,17 @@ from PIL import Image
 
 st.set_page_config(page_title="Mood Recognition AI", page_icon="😊")
 
-st.title("😊 Mood Recognition AI")
-st.write("Take a photo and the AI will detect your emotion!")
+st.title("🧠 Mood Recognition AI")
+st.markdown("Take a photo and let AI detect your emotion in real-time!")
 
-img_file = st.camera_input("📸 Click to take a photo")
+img_file = st.camera_input("📷 Take a photo for mood detection")
 
 if img_file:
-    img = Image.open(img_file)
-    frame = np.array(img)
-    frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-
     with st.spinner("Analyzing your mood..."):
+        img = Image.open(img_file)
+        frame = np.array(img)
+        frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+
         detector = FER(mtcnn=False)
         result = detector.detect_emotions(frame_bgr)
 
@@ -25,16 +25,22 @@ if img_file:
         dominant = max(emotions, key=emotions.get)
         confidence = emotions[dominant] * 100
 
-        st.success(f"**Detected Mood: {dominant.upper()}** ({confidence:.2f}%)")
-        st.subheader("All Emotion Scores:")
+        emoji_map = {
+            "happy": "😄", "sad": "😢", "angry": "😠",
+            "fear": "😱", "surprise": "😲", "disgust": "🤢", "neutral": "😐"
+        }
+        emoji = emoji_map.get(dominant, "🙂")
+
+        st.success(f"{emoji} Detected Mood: **{dominant.upper()}** ({confidence:.2f}%)")
+        st.markdown("### All Emotion Scores")
         st.bar_chart(emotions)
     else:
-        st.warning("😕 No face detected. Please try again with better lighting!")
+        st.warning("⚠️ No face detected. Please try again with better lighting!")
 ```
 
 ---
 
-**2. `requirements.txt`**
+**`requirements.txt`**
 ```
 streamlit
 fer
@@ -46,6 +52,6 @@ tensorflow-cpu
 
 ---
 
-**3. `packages.txt`**
+**`packages.txt`**
 ```
 libgl1
