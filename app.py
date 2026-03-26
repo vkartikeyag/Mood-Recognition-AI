@@ -36,22 +36,3 @@ if img_file:
         st.bar_chart(emotions)
     else:
         st.warning("⚠️ No face detected. Please try again with better lighting!")
-```
-
----
-
-**`requirements.txt`**
-```
-streamlit
-fer
-opencv-python-headless
-pillow
-numpy
-tensorflow-cpu
-```
-
----
-
-**`packages.txt`**
-```
-libgl1
